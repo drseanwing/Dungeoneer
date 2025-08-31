@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  dungeoneer:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "3000"
+    volumes:
+      - dungeoneer_data:/app/data
+    networks:
+      - internal
+volumes:
+  dungeoneer_data:
+networks:
+  internal:
+    internal: true
