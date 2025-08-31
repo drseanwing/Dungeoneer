@@ -1,14 +1,14 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install
+RUN yarn remove sharp && yarn add sharp
 COPY . .
-RUN yarn build # if applicable, or `yarn install && yarn start`
+RUN npm run buildlinux   # Explicit Linux build
 
-FROM node:18-alpine AS runtime
+FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app ./
-# Drop privileges: use a non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 EXPOSE 3000
